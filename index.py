@@ -17,8 +17,9 @@ db = SQLAlchemy(app)
 
 class ONOFF(db.Model):
     __tablename__ = 'ONOFF'
+    num = db.Column(db.Integer, primary_key=True)
     time = db.Column(db.DateTime)
-    isON = db.Column(db.Integer, primary_key=True)
+    isON = db.Column(db.Integer)
 
     def __init__(self, status):
         self.time = datetime.now()
@@ -39,6 +40,7 @@ def led_on():
         GPIO.output(17, GPIO.HIGH)
         onoff  = ONOFF(1)
         db.session.add(onoff)
+        db.session.commit()
     except :
         return "fail"
 
@@ -48,6 +50,7 @@ def led_off():
         GPIO.output(17, GPIO.LOW)
         onoff  = ONOFF(0)
         db.session.add(onoff)
+        db.session.commit()
         return "ok"
     except:
         return "fail"
