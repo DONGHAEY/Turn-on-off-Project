@@ -10,21 +10,21 @@ GPIO.setup(17, GPIO.OUT, initial=GPIO.LOW)
 def home():
     return render_template("index.html")
 
-@app.route("/on")
+@app.route("/led/on")
 def led_on():
     try:
         GPIO.output(17, GPIO.HIGH)
-        return 1
+        return "ok"
     except:
-        return 0
+        return "fail"
 
-@app.route("/off")
+@app.route("/led/off")
 def led_off():
     try:
         GPIO.output(17, GPIO.LOW)
-        return 1
+        return "ok"
     except:
-        return 0
+        return "fail"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
