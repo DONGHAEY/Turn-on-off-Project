@@ -3,7 +3,7 @@ from flask import render_template
 import RPi.GPIO as GPIO
 
 app = Flask(__name__)
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setup(17, GPIO.OUT, initial=GPIO.LOW)
 
 @app.route("/")
