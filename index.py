@@ -2,11 +2,9 @@ from flask import Flask, request
 from flask import render_template
 import RPi.GPIO as GPIO
 
-led = 17
-
 app = Flask(__name__)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(led, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(17, GPIO.OUT, initial=GPIO.LOW)
 
 @app.route("/")
 def home():
@@ -15,7 +13,7 @@ def home():
 @app.route("/on")
 def led_on():
     try:
-        GPIO.output(led, GPIO.HIGH)
+        GPIO.output(17, GPIO.HIGH)
         return 1
     except:
         return 0
@@ -23,7 +21,7 @@ def led_on():
 @app.route("/off")
 def led_off():
     try:
-        GPIO.output(led, GPIO.LOW)
+        GPIO.output(17, GPIO.LOW)
         return 1
     except:
         return 0
