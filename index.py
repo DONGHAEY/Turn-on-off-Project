@@ -41,6 +41,7 @@ def led_on():
         GPIO.output(17, GPIO.HIGH)
         onoff  = ONOFF(1)
         db.session.add(onoff)
+        db.session.commit()
         return "ok"
     except:
         return "fail"
@@ -51,6 +52,7 @@ def led_off():
         GPIO.output(17, GPIO.LOW)
         onoff  = ONOFF(0)
         db.session.add(onoff)
+        db.session.commit()
         return "ok"
     except:
         return "fail"
