@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ubuntu:mountains@localhost/led?charset=utf8'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://class1:mountains@localhost/led?charset=utf8'
 app.config['SQLALCHEMY_ECHO'] = True #로그를 위한 플래그
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #수정사항 추적, 로그사용으로 불필요
 app.config['SECRET_KEY'] = 'this is secret'
@@ -16,11 +16,9 @@ app.config['SECRET_KEY'] = 'this is secret'
 db = SQLAlchemy(app)
 
 class ONOFF(db.Model):
-
     __tablename__ = 'ONOFF'
-
     time = db.Column(db.DateTime)
-    isON = db.Column(db.Integer)
+    isON = db.Column(db.Integer, primary_key=True)
 
     def __init__(self, status):
         self.time = datetime.now()
@@ -41,9 +39,7 @@ def led_on():
         GPIO.output(17, GPIO.HIGH)
         onoff  = ONOFF(1)
         db.session.add(onoff)
-        db.session.commit()
-        return "ok"
-    except:
+    except :
         return "fail"
 
 @app.route("/led/off")
@@ -52,7 +48,6 @@ def led_off():
         GPIO.output(17, GPIO.LOW)
         onoff  = ONOFF(0)
         db.session.add(onoff)
-        db.session.commit()
         return "ok"
     except:
         return "fail"
