@@ -1,0 +1,45 @@
+.div1 {
+  width:400px;
+  height:400px;
+  position:fixed;
+  right:35%;
+}
+
+.div2 {
+  width:404px;
+  height:100px;
+  border:1px solid #222;
+  position:fixed;
+  left:550px;
+  top:400px;
+}
+
+.div3-1{
+  width:200px;
+  height:100px;
+  border:1px solid #222;
+  float:left;
+  position:relative;
+  background-color:aqua;
+}
+
+.div3-2{
+  width:200px;
+  height:100px;
+  border:1px solid #222;
+  float:left;
+  position:relative;
+  background-color:gold;
+}
+
+img {
+  width:300px;
+}
+
+p {
+  font-size:25px;
+  display:inline;
+  position:absolute;
+  left:42%;
+  top:10%;
+}
