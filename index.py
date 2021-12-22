@@ -1,4 +1,4 @@
-#DB에 값 넣는것은 다 하였다#
+#상태 체크 메서드를 추가하였다#
 
 from flask import Flask, request
 from flask import render_template
@@ -41,6 +41,7 @@ def led_on():
         onoff  = ONOFF(1)
         db.session.add(onoff)
         db.session.commit()
+        return "ok"
     except :
         return "fail"
 
@@ -54,6 +55,17 @@ def led_off():
         return "ok"
     except:
         return "fail"
+
+@app.route("/check")
+def check():
+    try :
+        process = ONOFF.query.filter_by().all()
+        stat = process[-1].isON
+        if(stat == 1) :
+            return '1'
+        else : return '0'
+    except:
+        print("err")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
