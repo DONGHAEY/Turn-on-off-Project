@@ -2,6 +2,7 @@
 
 from flask import Flask, request
 from flask import render_template
+from flask import jsonify
 import RPi.GPIO as GPIO
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -80,13 +81,27 @@ def led_off():
 @app.route("/check")
 def check():
     try :
-        process = ONOFF.query.filter_by().all()
-        stat = process[-1].isON
+        pc = ONOFF.query.filter_by().all()
+        stat = pc[-1].isON
         if(stat == 1) :
             return '1'
         else : return '0'
     except:
         print("err")
+
+@app.route("/history")
+def history():
+    try :
+        list = []
+        pc = USINGTIME.query.filter_by().all()
+        for i in pc :
+            list.append(i.time)
+        print(str(jsonify(list)))
+        
+    except :
+        print("err")
+        
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
