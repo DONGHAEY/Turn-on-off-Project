@@ -1,9 +1,11 @@
 const img = document.querySelector(".image"); //이미지 파일
 const sw1 = document.querySelector(".div3-1");
 const sw2 = document.querySelector(".div3-2");
+const today = document.querySelector(".today");
+const go = document.querySelector(".usingTime");
 
   async function check(url) {
-       try {
+    try {
 	   let res = await fetch(url);
 	   let status = await res.text();
 	   if (status == '1') {
@@ -23,7 +25,22 @@ const sw2 = document.querySelector(".div3-2");
        }
   }
 
+  async function cnt(url) {
+    try {
+	   let res = await fetch(url);
+	   let status = await res.text();
+     today.innerText = `오늘 LED를 ${status}번 켰습니다`
+       }
+       catch {
+	   console.log("faild");
+       }
+  }
+
   check("http://10.150.150.1:5000/check");
+  cnt("http://10.150.150.1:5000/count")
+  go.addEventListener("click", () => {
+	  location.href = "/graph"
+  })
 
   sw1.addEventListener("click", ()=> {
     img.src = "../static/images/high.png";

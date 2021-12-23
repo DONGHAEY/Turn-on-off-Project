@@ -1,4 +1,4 @@
-#상태 체크 메서드를 추가하였다#
+#서비스 구현 기능 완료#
 
 from flask import Flask, request
 from flask import render_template
@@ -82,6 +82,10 @@ def led_off():
     except:
         return "fail"
 
+onoff = ONOFF(0)
+db.session.add(onoff)
+db.session.commit()
+
 @app.route("/check")
 def check():
     try :
@@ -92,6 +96,7 @@ def check():
         else : return '0'
     except:
         print("err")
+        return "err"
 
 @app.route("/history")
 def history():
@@ -105,7 +110,24 @@ def history():
         return list
     except :
         print("err")
+        return "err"
         
+
+@app.route("/count")
+def count():
+    cnt = 0
+    day = str(datetime.now())
+    day= day[:10]
+    pc = ONOFF.query.filter_by().all()
+    for i in pc :
+        dday = str(i.time)
+        if day in dday :
+            if i.isON == 1 :
+                cnt+=1
+    print(cnt)
+    re = str(cnt)
+    return re
+
 
 
 if __name__ == "__main__":
