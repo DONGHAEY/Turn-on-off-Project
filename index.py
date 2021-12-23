@@ -96,9 +96,13 @@ def check():
 @app.route("/history")
 def history():
     try :
+        list = "{\"time\" : ["
         pc = USINGTIME.query.filter_by().all()
-
-        
+        for i in pc :
+            list += "{},".format("\""+str(i.time)+"\"")
+        list = list[:-1]
+        list += "]}"
+        return list
     except :
         print("err")
         
