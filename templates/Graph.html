@@ -1,28 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조명 사용량</title>
 </head>
 <body>
-    <h1>서버로부터 값을 받아오는 중..</h1>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <canvas id="line-chart" width="100" height="40"></canvas>
 </body>
+</html>
+
+
+// async function check(url) {
+// 	    try {
+// 		    let res = await fetch(url)
+// 		    let status = await res.text(res)
+// 		    console.log(status);
+// 		    let obj = JSON.parse(status)
+// 		    console.log(obj)
+// 			return obj
+// 	    }
+// 	    catch {
+// 		    console.log("faild")
+// 	    }
+//     }
+
+
 <script>
-    async function check(url) {
+async function check(url) {
 	    try {
 		    let res = await fetch(url)
 		    let status = await res.text(res)
 		    console.log(status);
 		    let obj = JSON.parse(status)
-		    console.log(obj)
+			return obj
 	    }
 	    catch {
 		    console.log("faild")
 	    }
     }
+const getdata = () => {
+let obj = check("http://10.150.150.1:5000/history");
 
-check("http://10.150.150.1:5000/history");
+let arr = obj.time
+let list = [];
+let second, minute, hour, temp, cpy;
+
+for(let i=0; i<arr.length; i++) {
+	temp = arr[i]
+
+	cpy = temp[6];
+	cpy += temp[7];
+	second = parseInt(cpy);
+	cpy = temp[3];
+	cpy +=temp[4];
+	minute = parseInt(cpy);
+	cpy = temp[0];
+	cpy += temp[1];
+	hour = parseInt(cpy);
+
+	temp = minute
+	temp += second/60;
+	temp += 60*hour;
+	list[i] = temp
+	}
+
+    return list;
+}
+let data = getdata()
+
+  new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: data,
+    datasets: [{ 
+        data: data,
+        label: "Africa",
+        borderColor: "#3e95cd",
+        fill: false
+    }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: '조명 사용 시간도'
+    }
+  }
+});
 </script>
-</html>
