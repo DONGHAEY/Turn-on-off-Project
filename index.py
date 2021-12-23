@@ -1,4 +1,10 @@
 #서비스 구현 기능 완료#
+#주 개발자 : 오동현 이경신 이규진 이민석#
+#부산소프트웨어마이스터고등학교#
+#프로젝트 명 : 조명 원격제어#
+#설명 : 이 프로젝트는 파이썬을 이용하여 플라스크 프레임워크를 활용하여 서버를 만들었다#
+#이 프로젝트에서 조명을 원격으로 제어하며, 얼마나 키고있었는지를 그래프로 보여주고, 오늘 불 킨 횟수도 표시해준다#
+#서브로 추가할 기능은 타이머기능이다#
 
 from flask import Flask, request
 from flask import render_template
@@ -18,20 +24,20 @@ db = SQLAlchemy(app)
 
 class ONOFF(db.Model):
     __tablename__ = 'ONOFF'
-    num = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.DateTime)
-    isON = db.Column(db.Integer)
+    num = db.Column(db.Integer, primary_key=True) #순서 자동증가 primarykey
+    time = db.Column(db.DateTime) #날짜및시간
+    isON = db.Column(db.Integer) #조명켜져있는지 유무 1또는 0으로 저장
 
-    def __init__(self, status):
+    def __init__(self, status): #생성자 함수
         self.time = datetime.now()
         self.isON = status
 
 class USINGTIME(db.Model) :
     __tablename__ = 'USINGTIME'
-    num = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.Time)
+    num = db.Column(db.Integer, primary_key=True) #순서 자동증가 primarykey
+    time = db.Column(db.Time) #조명을 얼마나 키고있었는지 저장하는 곳, 조명을 끌 때 기록된다
 
-    def __init__(self, time):
+    def __init__(self, time): #생성자 함수
         self.time=time
 
 
@@ -53,13 +59,13 @@ def process() :
 
 @app.route("/")
 def home():
-    return render_template("LED.html")
+    return render_template("LED.html") #스위치를 보여주는 html을 렌더한다
 
 @app.route("/graph")
 def graph():
-    return render_template("Graph.html")
+    return render_template("Graph.html") #그래프를 보여주는 html을 렌더한다
 
-@app.route("/led/on")
+@app.route("/led/on") #조명을 키는 API이다
 def led_on():
     try:
         GPIO.output(17, GPIO.HIGH)
@@ -70,7 +76,7 @@ def led_on():
     except :
         return "fail"
 
-@app.route("/led/off")
+@app.route("/led/off") #조명을 끄는 API이다.
 def led_off():
     try:
         GPIO.output(17, GPIO.LOW)
@@ -86,7 +92,7 @@ onoff = ONOFF(0)
 db.session.add(onoff)
 db.session.commit()
 
-@app.route("/check")
+@app.route("/check") #조명이 켜져있는지 꺼져있는지 여부를 알려주는 API이다.
 def check():
     try :
         pc = ONOFF.query.filter_by().all()
@@ -98,7 +104,7 @@ def check():
         print("err")
         return "err"
 
-@app.route("/history")
+@app.route("/history") #조명을 몇초 몇분동안 키고 있었는지를 리스트로 보내준다 json으로 보내주는 API이다.
 def history():
     try :
         list = "{\"time\" : ["
@@ -113,7 +119,7 @@ def history():
         return "err"
         
 
-@app.route("/count")
+@app.route("/count") #조명을 하루동안 몇번 켰는지를 보내주는 API이다.
 def count():
     cnt = 0
     day = str(datetime.now())
