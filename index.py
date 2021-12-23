@@ -55,6 +55,10 @@ def process() :
 def home():
     return render_template("LED.html")
 
+@app.route("/graph")
+def graph():
+    return render_template("Graph.html")
+
 @app.route("/led/on")
 def led_on():
     try:
@@ -92,11 +96,8 @@ def check():
 @app.route("/history")
 def history():
     try :
-        list = []
         pc = USINGTIME.query.filter_by().all()
-        for i in pc :
-            list.append(i.time)
-        print(str(jsonify(list)))
+
         
     except :
         print("err")
