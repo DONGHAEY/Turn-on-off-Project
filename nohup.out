@@ -25,15 +25,6 @@ class ONOFF(db.Model):
         self.time = datetime.now()
         self.isON = status
 
-class USINGTIME(db.Model) :
-    __tablename__ = 'USINGTIME'
-    num = db.Column(db.Integer, primary_key=True)
-    time = db.Column(db.Time)
-
-    def __init__(self, time):
-        self.time=time
-
-
 db.create_all()
 
 GPIO.setmode(GPIO.BCM)
@@ -41,13 +32,10 @@ GPIO.setup(17, GPIO.OUT, initial=GPIO.LOW)
 
 
 def process() :
-    pc = ONOFF.query.filter_by().all()
-    onTime = pc[-2].time
-    offTime = pc[-1].time
-    p = offTime-onTime
-    usingtime = USINGTIME(p)
-    db.session.add(usingtime)
-    db.session.commit()
+    process = ONOFF.query.filter_by().all()
+    onTime = process[-2].time
+    offTime = process[-1].time
+    return {onTime, offTime}
 
 
 @app.route("/")
@@ -72,7 +60,8 @@ def led_off():
         onoff  = ONOFF(0)
         db.session.add(onoff)
         db.session.commit()
-        process()
+        list = process()
+        print(str(list[0]))
         return "ok"
     except:
         return "fail"
