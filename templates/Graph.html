@@ -1,71 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>조명 사용량</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>조명 사용량</title>
 </head>
 <body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-  <canvas id="line-chart" width="100" height="40"></canvas>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<canvas id="line-chart" width="100" height="40"></canvas>
 </body>
+<script type="text/javascript" src="../static/graph.js"></script>
 </html>
-
-
-<script>
-let list = [];
-async function check(url) {
-	    try {
-		    let res = await fetch(url)
-		    let status = await res.text(res)
-		    let obj = JSON.parse(status)
-			let arr = obj.time
-			let second, minute, hour, temp, cpy;
-
-			for(let i=0; i<arr.length; i++) {
-				temp = arr[i]
-
-				cpy = temp[6];
-				cpy += temp[7];
-				second = parseInt(cpy);
-				cpy = temp[3];
-				cpy +=temp[4];
-				minute = parseInt(cpy);
-				cpy = temp[0];
-				cpy += temp[1];
-				hour = parseInt(cpy);
-
-				temp = minute
-				temp += second/60;
-				temp += 60*hour;
-				list[i] = temp
-			}
-		    console.log(list);
-		    	new Chart(document.getElementById("line-chart"), {
-  type: 'line',
-  data: {
-    labels: [1,2,3,4,5,6,7,8,9,10],
-    datasets: [{
-        data: list,
-        label: "LED USING TIME",
-        borderColor: "#3e95cd",
-        fill: false
-    }
-    ]
-  },
-  options: {
-    title: {
-      display: true,
-      text: '조명 사용 시간도'
-    }
-  }
-});
-		    return list;
-	    }
-	    catch {
-		    console.log("faild")
-	    }
-    }
-    check("http://10.150.150.1:5000/history")
-</script>
