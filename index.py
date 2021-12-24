@@ -109,6 +109,7 @@ def history():
     try :
         list = "{\"time\" : ["
         pc = USINGTIME.query.filter_by().all()
+        pc = pc[-10:]
         for i in pc :
             list += "{},".format("\""+str(i.time)+"\"")
         list = list[:-1]
